@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+      <p id="message" style="color:red;"></p>
+    <table border="1px">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>emails</th>
+                <th>username</th>
+                <th>felier</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+    <script>
+        let a=0;
+          let data =[]
+ async function getdata(){
+            const token=localStorage.getItem("token");
+           const res= await fetch("http://localhost:3000/users",{
+            method:"GET",
+            headers:{
+                "Content-Type":"application/json",
+                "auth":"Bearer " + token
+            }
+           })
+           if(res.ok){
+            return await res.json();
+    
+           }
+         
+        }
+        function sayHello(data){
+            
+
+            if(!data){
+                alert("No data available. Please try again later.");
+                return;
+            }else{
+            tbody.innerHTML = "";
+            data.forEach(item => {
+
+            // item=data[a];
+            // if(data.length == a){
+            //     alert("no more data available");
+            // }
+                    let tr = document.createElement("tr");
+
+                    let tdName = document.createElement("td");
+                    tdName.textContent = item.name || "N/A";
+                    tr.appendChild(tdName);
+
+                    let tdEmail = document.createElement("td");
+                    tdEmail.textContent = item.email || "N/A";
+                    tr.appendChild(tdEmail);
+
+                    let tdUsername = document.createElement("td");
+                    tdUsername.textContent = item.username || "N/A";
+                    tr.appendChild(tdUsername);
+
+                    let tdFelier = document.createElement("td");
+                    tdFelier.textContent = item.felier || "N/A";
+                    tr.appendChild(tdFelier);
+                    let td=document.createElement("td")
+                    let button=document.createElement("button")
+                    button.addEventListener("click", () => tr.remove());
+                    button.textContent="delete"
+                    td.append(button);
+                    tr.appendChild(td)
+
+                    tbody.appendChild(tr);
+                });
+            }
+        
+        }
+        setTimeout(async() => {
+                data= await getdata();
+                loop();
+        }, 1000);
+function loop(){
+    setInterval( () => {
+        a++
+  
+        if (data.length === 0) {
+          document.getElementById("message").textContent = "No data found.";
+        } else {
+          document.getElementById("message").textContent = "";
+     sayHello(data);
+        }
+      }, 3000);
+}
+
+      
+    </script>
+</body>
+</html>
