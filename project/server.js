@@ -3,7 +3,7 @@ const app=express();
 const { MongoClient, ObjectId } = require('mongodb');
 const jwt=require("jsonwebtoken");
 const cors=require("cors");
-const auth=require("./midllware/auth");
+const auth=require("./md/auth");
 app.use(cors());
 app.use(express.json());
 const os = require('os');
